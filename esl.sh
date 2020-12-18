@@ -30,11 +30,11 @@ get_esl_mods () {
   
   if [ "$1" = "react" ] || [ "$1" = "next" ] || [ "$1" = "native" ] || [ "$1" = "react-native" ] || [ "$1" = "reactnative" ]; then
     esl_mods="${color_blue}Add the following to \`.eslintrc.js\`'s extend:${color_none}\
-      \n  \"eslint:recommended\",\
       \n  \"plugin:react/recommended\",\
       \n  \"plugin:react-hooks/recommended\",\
       \n  \"plugin:jsx-a11y/recommended\",\
-      \n  \"plugin:prettier/recommended\""
+      \n  \"prettier\",\
+      \n  \"prettier/react\""
   fi
   
   #return
