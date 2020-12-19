@@ -1,4 +1,4 @@
-# emulate vue project creation for react/next
+# emulate vue project creation for create-react-app
 react () {
   if [ "$1" = "create" ]; then 
     create-react-app ${@:2}
@@ -7,6 +7,8 @@ react () {
   fi
 }
 
+
+# emulate vue project creation for create-next-app
 next () {
   if [ "$1" = "create" ]; then 
     create-next-app ${@:2}
@@ -14,4 +16,3 @@ next () {
     create-next-app ${@:1}
   fi
 }
-
