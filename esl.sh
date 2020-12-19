@@ -46,14 +46,6 @@ esl () {
   local color_none='\033[0m'
   local plugins=()
   local mods=""
-  local should_init=false
-
-  # check for prescence of initialising eslint 
-  for i in "$@"; do
-    if [ "$i" = "init" ] ; then
-      should_init=true
-    fi
-  done
 
   # get language dependent eslint plugins and mods for each argument
   while [ -n "$1" ]; do
@@ -71,16 +63,19 @@ esl () {
   # install all plugins
   yarn add -D -s ${plugins[@]}
 
-  # initialise eslint (if required)
-  if [ "$should_init" = true ]; then
-    eslint --init
-  fi
+  # ask whether or not to run eslint --init 
+  read -n 1 -s -p "$( echo -e "\n${color_blue}Initialise ESLint${color_none} (y/N)${color_blue}?${color_none}" )" init_eslint
+  case "$init_eslint" in 
+    y|Y ) echo -e "\n"; eslint --init;;
+    * ) echo;;
+  esac
+
 
   # if any modifications need to be made, print them
   if [ -n "$mods" ]; then
-    echo -e "Installation complete! Please make the following modifications:\n"
+    echo -e "\nInstallation complete! Please make the following modifications:\n"
     echo -e "$mods"
   else
-    echo "Installation complete!"
+    echo -e "\nInstallation complete!"
   fi
 }
