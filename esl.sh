@@ -1,18 +1,16 @@
 # get a list of eslint plugins for a specified language
 get_esl_plugins () {
   local esl_plugins
-  local react_base_plugins=("eslint-plugin-react" "eslint-plugin-react-hooks" "eslint-plugin-jsx-a11y")
+  local react_base_plugins=("babel-eslint" "eslint-plugin-react" "eslint-plugin-react-hooks" "eslint-plugin-jsx-a11y")
 
   if [ "$1" = "init" ]; then
     esl_plugins=("eslint")
   elif [ "$1" = "prettier" ] || [ "$1" = "pretty" ]; then
     esl_plugins=("prettier" "eslint-plugin-prettier" "eslint-config-prettier")
-  elif [ "$1" = "react" ]; then
+  elif [ "$1" = "react" ] || [ "$1" = "next" ]; then
     esl_plugins=(${react_base_plugins[@]})
-  elif [ "$1" = "next" ]; then
-    esl_plugins=("babel-eslint" ${react_base_plugins[@]})
   elif [ "$1" = "native" ] || [ "$1" = "react-native" ] || [ "$1" = "reactnative" ]; then
-    esl_plugins=("babel-eslint" "eslint-plugin-react-native" ${react_base_plugins[@]})
+    esl_plugins=("eslint-plugin-react-native" ${react_base_plugins[@]})
   elif [ "$1" = "standard" ]; then
     esl_plugins=("eslint-config-standard" "eslint-plugin-promise" "eslint-plugin-import" "eslint-plugin-node")
   elif [ "$1" = "import-sort" ] || [ "$1" = "importsort" ]; then
@@ -31,12 +29,15 @@ get_esl_mods () {
   local esl_mods=""
   
   if [ "$1" = "react" ] || [ "$1" = "next" ] || [ "$1" = "native" ] || [ "$1" = "react-native" ] || [ "$1" = "reactnative" ]; then
-    esl_mods="${color_blue}Add the following to \`.eslintrc.js\`'s extend:${color_none}\
-      \n  \"plugin:react/recommended\",\
-      \n  \"plugin:react-hooks/recommended\",\
-      \n  \"plugin:jsx-a11y/recommended\",\
-      \n  \"prettier\",\
-      \n  \"prettier/react\""
+    esl_mods="${color_blue}Add the following to \`.eslintrc.js\`:${color_none}\
+    \n  extends: [
+    \n    \"plugin:react/recommended\",\
+    \n    \"plugin:react-hooks/recommended\",\
+    \n    \"plugin:jsx-a11y/recommended\",\
+    \n    \"prettier\",\
+    \n    \"prettier/react\",\
+    \n  ],\
+    \n  parser: \"babel-eslint\""
   fi
   
   #return
