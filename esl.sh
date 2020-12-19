@@ -25,6 +25,8 @@ get_esl_plugins () {
   echo ${esl_plugins[@]}
 }
 
+
+# get a string of post-install eslint mods for a specified language
 get_esl_mods () {
   local esl_mods=""
   
@@ -41,6 +43,8 @@ get_esl_mods () {
   echo "$esl_mods"
 }
 
+
+# install eslint plugins for specified languages
 esl () {
   local color_blue='\033[0;36m'
   local color_none='\033[0m'
@@ -63,13 +67,12 @@ esl () {
   # install all plugins
   yarn add -D -s ${plugins[@]}
 
-  # ask whether or not to run eslint --init 
+  # ask whether or not to run `eslint --init` 
   read -n 1 -s -p "$( echo -e "\n${color_blue}Initialise ESLint${color_none} (y/N)${color_blue}?${color_none}" )" init_eslint
   case "$init_eslint" in 
     y|Y ) echo -e "\n"; eslint --init;;
     * ) echo;;
   esac
-
 
   # if any modifications need to be made, print them
   if [ -n "$mods" ]; then
