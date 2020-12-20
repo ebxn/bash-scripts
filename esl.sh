@@ -1,16 +1,13 @@
 # get a list of eslint plugins for a specified language
 get_esl_plugins () {
   local esl_plugins
-  local react_base_plugins=("babel-eslint" "eslint-plugin-react" "eslint-plugin-react-hooks" "eslint-plugin-jsx-a11y")
 
   if [ "$1" = "init" ]; then
     esl_plugins=("eslint")
   elif [ "$1" = "prettier" ] || [ "$1" = "pretty" ]; then
     esl_plugins=("prettier" "eslint-plugin-prettier" "eslint-config-prettier")
-  elif [ "$1" = "react" ] || [ "$1" = "next" ]; then
-    esl_plugins=(${react_base_plugins[@]})
-  elif [ "$1" = "native" ] || [ "$1" = "react-native" ] || [ "$1" = "reactnative" ]; then
-    esl_plugins=("eslint-plugin-react-native" ${react_base_plugins[@]})
+  elif [ "$1" = "react" ] || [ "$1" = "next" ] || [ "$1" = "native" ]; then
+    esl_plugins=("babel-eslint" "eslint-plugin-react" "eslint-plugin-react-hooks" "eslint-plugin-jsx-a11y")
   elif [ "$1" = "standard" ]; then
     esl_plugins=("eslint-config-standard" "eslint-plugin-promise" "eslint-plugin-import" "eslint-plugin-node")
   elif [ "$1" = "import-sort" ] || [ "$1" = "importsort" ]; then
@@ -23,14 +20,12 @@ get_esl_plugins () {
   echo ${esl_plugins[@]}
 }
 
-
-# get a string of post-install eslint mods for a specified language
 get_esl_mods () {
   local esl_mods=""
   
-  if [ "$1" = "react" ] || [ "$1" = "next" ] || [ "$1" = "native" ] || [ "$1" = "react-native" ] || [ "$1" = "reactnative" ]; then
+  if [ "$1" = "react" ] || [ "$1" = "next" ] || [ "$1" = "native" ]; then
     esl_mods="${color_blue}Add the following to \`.eslintrc.js\`:${color_none}\
-    \n  extends: [
+    \n  extends: [\
     \n    \"plugin:react/recommended\",\
     \n    \"plugin:react-hooks/recommended\",\
     \n    \"plugin:jsx-a11y/recommended\",\
@@ -44,8 +39,6 @@ get_esl_mods () {
   echo "$esl_mods"
 }
 
-
-# install eslint plugins for specified languages
 esl () {
   local color_blue='\033[0;36m'
   local color_none='\033[0m'
@@ -68,12 +61,13 @@ esl () {
   # install all plugins
   yarn add -D -s ${plugins[@]}
 
-  # ask whether or not to run `eslint --init` 
+  # ask whether or not to run eslint --init 
   read -n 1 -s -p "$( echo -e "\n${color_blue}Initialise ESLint${color_none} (y/N)${color_blue}?${color_none}" )" init_eslint
   case "$init_eslint" in 
     y|Y ) echo -e "\n"; eslint --init;;
     * ) echo;;
   esac
+
 
   # if any modifications need to be made, print them
   if [ -n "$mods" ]; then
